@@ -57,7 +57,9 @@ export async function sendMessage(req: Request, res: Response) {
   try {
     const results: any = [];
     for (const contato of phone) {
-      results.push(await req.client.sendText(contato, message, options));
+      const result = await req.client.sendText(contato, message, options);
+      result.id = result.id.toString();
+      results.push(result);
     }
 
     if (results.length === 0)
@@ -67,7 +69,6 @@ export async function sendMessage(req: Request, res: Response) {
   } catch (error) {
     returnError(req, res, error);
   }
-}
 
 export async function sendFile(req: Request, res: Response) {
   /**
